@@ -64,7 +64,7 @@ Se utiliza la **base de datos H2 en memoria** para desarrollo, y validaciones co
     │   └── com
     │       └── veterinaria
     │           └── veterinaria
-    │               ├── VeterinariaApplication.java  # Clase principal
+    │               ├── VeterinariaApplication.java  
     │               ├── ref
     │               │   ├── dueno
     │               │   │   ├── model
