@@ -1,9 +1,9 @@
 # Proyecto Veterinaria
 
 Este proyecto es una API REST desarrollada con **Spring Boot** (versión 3.x), utilizando Java 21 y **Maven** como sistema de construcción.  
-Permite gestionar **Dueños** y **Mascotas**, con una **base de datos en memoria H2** y un esquema inicial de tablas con datos de prueba.
+Permite gestionar **Dueños**, **Mascotas**, **Veterinarios**, **Tratamientos**, **Consultas** y **Fichas Clínicas**, con una **base de datos en memoria H2** y un esquema inicial de tablas con datos de prueba.
 
-A continuación se detallan los componentes, su organización y los pasos para compilar y ejecutar la aplicación.
+A continuación, se detallan los componentes, su organización y los pasos para compilar y ejecutar la aplicación.
 
 ---
 
@@ -13,7 +13,8 @@ A continuación se detallan los componentes, su organización y los pasos para c
 3. [Instalación y Configuración](#instalación-y-configuración)
 4. [Estructura de Carpetas](#estructura-de-carpetas)
 5. [Dependencias Principales en el POM](#dependencias-principales-en-el-pom)
-6. [Autor](#autor)
+6. [Datos Ejemplo en JSON](#datos-ejemplo-en-json)
+7. [Autor](#autor)
 
 ---
 
@@ -24,7 +25,7 @@ El proyecto sigue una estructura típica de **Spring Boot** con:
 - **Repository** (interfaces que extienden de `JpaRepository`)
 - **Service** (clases con lógica de negocio)
 - **Controller** (exposición de API REST con endpoints)
-- **`data.sql`** para insertar datos iniciales en la BD
+- **`data.sql`** para insertar datos iniciales en la BD.
 
 Se utiliza la **base de datos H2 en memoria** para desarrollo, y validaciones con **Jakarta Validation** (`@Valid`, `@NotBlank`, etc.).
 
@@ -44,6 +45,7 @@ Se utiliza la **base de datos H2 en memoria** para desarrollo, y validaciones co
 2. En la raíz del proyecto (donde está el `pom.xml`), ejecutar:
    ```bash
    mvn clean install
+
 
 
 3. Para iniciar la aplicación localmente:
@@ -135,7 +137,52 @@ Se utiliza la **base de datos H2 en memoria** para desarrollo, y validaciones co
     </dependency>
 </dependencies>
 
-6. Author
+6. [Datos Ejemplo en JSON
+```bash
+Veterinario
+[
+  {
+    "id": 1,
+    "nombre": "Dr. Carlos López",
+    "especialidad": "General",
+    "telefono": "3333-3333",
+    "email": "carlos.lopez@example.com"
+  }
+]
+
+Tratamiento
+
+[
+  {
+    "id": 1,
+    "nombre": "Vacuna antirrábica",
+    "costo": 150.00,
+    "descripcion": "Vacuna para prevenir la rabia."
+  }
+]
+
+Ficha Clinica
+
+[
+  {
+    "id": 1,
+    "mascotaId": 1,
+    "veterinarioId": 1,
+    "tratamientoId": 1,
+    "fecha": "2025-02-15",
+    "descripcion": "Vacunación completa para prevenir la rabia."
+  }
+]
+
+
+```
+   
+   
+7. Author
 
 **Nombre:** Antonio Cesar Barrios  
+
+
+
+
 
