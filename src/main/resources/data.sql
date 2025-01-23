@@ -9,12 +9,14 @@ VALUES
 (2, 'Maria Gomez', 'maria@example.com', '2222-2222', '9999-9999', 'Calle B 456');
 
 INSERT INTO MASCOTA (id, nombre, edad, dueno_id, especie_id)
-VALUES (1, 'Firulais', 3, 1, 1),
-       (2, 'Michi', 1, 2, 2);
+VALUES
+(1, 'Firulais', 3, 1, 1),
+(2, 'Michi', 1, 2, 2),
+(3, 'Bolita', 2, 1, 3);
 
 
 
-INSERT INTO CONSULTA (id, fecha, motivo, diagnostico, tratamiento, observaciones, mascota_id)
-VALUES (1, '2025-02-15', 'Vacunación', 'Todo OK', 'Vacuna antirrábica', 'Se aplicó vacuna', 1),
-       (2, '2025-02-20', 'Dolor de estómago', 'Gastritis leve', 'Medicamento X', 'Revisar en 3 días', 2);
+
+
+
 
