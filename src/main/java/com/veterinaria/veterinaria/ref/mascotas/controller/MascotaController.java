@@ -32,22 +32,22 @@ public class MascotaController {
         return mascotaService.save(mascota);
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
-        mascotaService.deleteById(id);
-    }
-
     @PutMapping("/{id}")
     public Mascota actualizar(@PathVariable Long id, @RequestBody Mascota mascotaData) {
         return mascotaService.findById(id)
                 .map(mascota -> {
-                    // Actualizamos atributos
                     mascota.setNombre(mascotaData.getNombre());
                     mascota.setEdad(mascotaData.getEdad());
-                    // Actualizar la especie (si corresponde)
+                    mascota.setDueno(mascotaData.getDueno());
                     mascota.setEspecie(mascotaData.getEspecie());
                     return mascotaService.save(mascota);
-                }).orElse(null);
+                })
+                .orElse(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable Long id) {
+        mascotaService.deleteById(id);
     }
 
 
