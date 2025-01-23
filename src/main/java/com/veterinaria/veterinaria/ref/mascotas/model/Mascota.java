@@ -1,4 +1,5 @@
 package com.veterinaria.veterinaria.ref.mascotas.model;
+import com.veterinaria.veterinaria.ref.dueno.model.Dueno;
 import com.veterinaria.veterinaria.ref.especie.model.Especie;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,8 +16,13 @@ public class Mascota {
 
     private int edad;
 
-    // Relación "muchas mascotas -> una especie"
+
     @ManyToOne
-    @JoinColumn(name = "especie_id") // Nombre de la columna FK en Mascota
+    @JoinColumn(name = "dueno_id")
+    private Dueno dueno;
+    @ManyToOne
+    @JoinColumn(name = "especie_id")
     private Especie especie;
+
+
 }
