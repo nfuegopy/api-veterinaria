@@ -1,188 +1,404 @@
-# Proyecto Veterinaria
+# 🏥 Veterinary Clinic API | API de Clínica Veterinaria
 
-Este proyecto es una API REST desarrollada con **Spring Boot** (versión 3.x), utilizando Java 21 y **Maven** como sistema de construcción.  
-Permite gestionar **Dueños**, **Mascotas**, **Veterinarios**, **Tratamientos**, **Consultas** y **Fichas Clínicas**, con una **base de datos en memoria H2** y un esquema inicial de tablas con datos de prueba.
+[English](#english) | [Español](#español)
 
-A continuación, se detallan los componentes, su organización y los pasos para compilar y ejecutar la aplicación.
+# English
 
----
+## Overview
+A comprehensive REST API built with Spring Boot 3.4.1 and Java 21, designed to manage all aspects of a veterinary clinic's operations. This system provides a robust platform for managing pets, consultations, clinical records, and staff.
 
-## Tabla de Contenidos
-1. [Arquitectura y Paquetes](#arquitectura-y-paquetes)
-2. [Requisitos Previos](#requisitos-previos)
-3. [Instalación y Configuración](#instalación-y-configuración)
-4. [Estructura de Carpetas](#estructura-de-carpetas)
-5. [Dependencias Principales en el POM](#dependencias-principales-en-el-pom)
-6. [Datos Ejemplo en JSON](#datos-ejemplo-en-json)
-7. [Autor](#autor)
+## 🌟 Key Features
+- Complete veterinary clinic management system
+- JWT-based secure authentication
+- In-memory H2 database with sample data
+- Docker containerization
+- Render deployment ready
+- Comprehensive error handling
+- Data validation
+- Modular architecture
 
----
-
-## Arquitectura y Paquetes
-
-El proyecto sigue una estructura típica de **Spring Boot** con:
-- **Model** (entidades JPA)
-- **Repository** (interfaces que extienden de `JpaRepository`)
-- **Service** (clases con lógica de negocio)
-- **Controller** (exposición de API REST con endpoints)
-- **`data.sql`** para insertar datos iniciales en la BD.
-
-Se utiliza la **base de datos H2 en memoria** para desarrollo, y validaciones con **Jakarta Validation** (`@Valid`, `@NotBlank`, etc.).
-
----
-
-## Requisitos Previos
-
-- **Java 21** instalado.
-- **Maven 3.8+** instalado.
-- (Opcional) Un IDE como IntelliJ, Eclipse o VS Code con soporte para proyectos Maven/Spring Boot.
-
----
-
-## Instalación y Configuración
-
-1. **Clonar o descargar** este repositorio.
-2. En la raíz del proyecto (donde está el `pom.xml`), ejecutar:
-   ```bash
-   mvn clean install
-
-
-
-3. Para iniciar la aplicación localmente:
-   ```bash
-   mvn spring-boot:run
-
-    o bien:
-    ```bash
-    mvn clean package
-    java -jar target/veterinaria-0.0.1-SNAPSHOT.jar
-   
-4. Estructura de carpetas
-   
- ```bash
-    src
-└── main
-    ├── java
-    │   └── com
-    │       └── veterinaria
-    │           └── veterinaria
-    │               ├── VeterinariaApplication.java  
-    │               ├── ref
-    │               │   ├── dueno
-    │               │   │   ├── model
-    │               │   │   │   └── Dueno.java
-    │               │   │   ├── repository
-    │               │   │   │   └── DuenoRepository.java
-    │               │   │   ├── service
-    │               │   │   │   └── DuenoService.java
-    │               │   │   └── controller
-    │               │   │       └── DuenoController.java
-    │               │   └── especie
-    │               │       └── ...
-    │               ├── model
-    │               │   └── Mascota.java
-    │               ├── repository
-    │               │   └── MascotaRepository.java
-    │               ├── service
-    │               │   └── MascotaService.java
-    │               └── controller
-    │                   └── MascotaController.java
-    └── resources
-        ├── application.properties
-        └── data.sql
-
+## 🏗 Project Structure
+```
+nfuegopy-api-veterinaria/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/veterinaria/
+│   │   │       ├── modules/       # Core functionality
+│   │   │       ├── ref/          # Reference data
+│   │   │       └── seguridad/    # Security components
+│   │   └── resources/
+│   └── test/
+├── Dockerfile
+└── pom.xml
 ```
 
-5. Dependencias Principales en el POM
+### 📦 Core Modules
+1. **Consultation Management (Consulta)**
+   - Schedule appointments
+   - Record visit details
+   - Track medical history
+   - Manage diagnoses
 
-    ```bash
-     <dependencies>
-    <!-- Web: para exponer la API REST -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
+2. **Employee Management (Empleado)**
+   - Staff profiles
+   - Contact information
+   - Employment records
+   - Schedule management
 
-    <!-- JPA: para mapear entidades y acceder a BD -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
+3. **Clinical Records (Ficha Clinica)**
+   - Detailed medical histories
+   - Treatment records
+   - Follow-up appointments
+   - Health metrics tracking
 
-    <!-- H2: BD en memoria para desarrollo/pruebas -->
-    <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <scope>runtime</scope>
-    </dependency>
+4. **Veterinarian Management (Veterinario)**
+   - Professional profiles
+   - Specializations
+   - Availability scheduling
+   - Patient assignments
 
-    <!-- Validation: para @NotBlank, @Email, @Valid, etc. -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-validation</artifactId>
-    </dependency>
+### 📚 Reference Modules
+1. **Pet Owners (Dueno)**
+   - Complete owner profiles
+   - Contact information
+   - Multiple pet linking
+   - Communication preferences
 
-    <!-- Lombok: para reducir boilerplate de getters/setters -->
-    <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <scope>provided</scope>
-    </dependency>
+2. **Species Catalog (Especie)**
+   - Animal species registry
+   - Breed information
+   - Species-specific care guidelines
 
-    <!-- Test: JUnit (opcional) -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <scope>test</scope>
-    </dependency>
-</dependencies>
+3. **Pets Registry (Mascotas)**
+   - Detailed pet profiles
+   - Medical history
+   - Owner associations
+   - Age and health tracking
 
-6. [Datos Ejemplo en JSON
+4. **Treatment Management (Tratamiento)**
+   - Treatment protocols
+   - Medication tracking
+   - Cost management
+   - Follow-up scheduling
+
+## 🛠️ Technical Specifications
+
+### Technologies Used
+- **Java 21**: Latest LTS version
+- **Spring Boot 3.4.1**: Modern application framework
+- **Spring Security**: Authentication and authorization
+- **Spring Data JPA**: Data persistence
+- **H2 Database**: In-memory database
+- **JWT**: Token-based security
+- **Maven**: Dependency management
+- **Docker**: Containerization
+- **Lombok**: Boilerplate reduction
+
+## 🚀 Installation and Setup
+
+### Prerequisites
 ```bash
-Veterinario
-[
-  {
-    "id": 1,
-    "nombre": "Dr. Carlos López",
-    "especialidad": "General",
-    "telefono": "3333-3333",
-    "email": "carlos.lopez@example.com"
-  }
-]
-
-Tratamiento
-
-[
-  {
-    "id": 1,
-    "nombre": "Vacuna antirrábica",
-    "costo": 150.00,
-    "descripcion": "Vacuna para prevenir la rabia."
-  }
-]
-
-Ficha Clinica
-
-[
-  {
-    "id": 1,
-    "mascotaId": 1,
-    "veterinarioId": 1,
-    "tratamientoId": 1,
-    "fecha": "2025-02-15",
-    "descripcion": "Vacunación completa para prevenir la rabia."
-  }
-]
-
-
+Java 21
+Maven 3.9.x
+Docker (optional)
+Git
 ```
-   
-   
-7. Author
 
-**Nombre:** Antonio Cesar Barrios  
+### Local Development Setup
+1. Clone the repository:
+```bash
+git clone https://github.com/nfuegopy/nfuegopy-api-veterinaria.git
+cd nfuegopy-api-veterinaria
+```
 
+2. Build the project:
+```bash
+mvn clean install
+```
 
+3. Run the application:
+```bash
+mvn spring-boot:run
+```
 
+### Docker Deployment
+1. Build Docker image:
+```bash
+docker build -t veterinaria-api .
+```
 
+2. Run container:
+```bash
+docker run -p 8080:8080 veterinaria-api
+```
+
+## 📡 API Endpoints
+
+### Authentication
+```
+POST /api/auth/login
+Body: {
+    "username": "string",
+    "password": "string"
+}
+```
+
+### Main Resources
+- **Consultations**
+  - GET /api/consultas
+  - POST /api/consultas
+  - GET /api/consultas/{id}
+  - PUT /api/consultas/{id}
+  - DELETE /api/consultas/{id}
+
+- **Employees**
+  - GET /api/empleados
+  - POST /api/empleados
+  - GET /api/empleados/{id}
+  - PUT /api/empleados/{id}
+  - DELETE /api/empleados/{id}
+
+[Additional endpoints documentation...]
+
+## 💾 Database Configuration
+
+### H2 Database Settings
+```properties
+URL: jdbc:h2:mem:testdb
+Username: sa
+Password: 123
+Console: http://localhost:8080/h2-console
+```
+
+## 🌐 Render Deployment Guide
+
+1. **Repository Preparation**
+   - Fork the repository
+   - Configure environment variables
+
+2. **Render Setup**
+   - Create new Web Service
+   - Connect GitHub repository
+   - Select Docker runtime
+   - Configure environment variables
+
+3. **Deployment**
+   - Use auto-deploy feature
+   - Monitor build logs
+   - Verify deployment
+
+---
+
+# Español
+
+## Descripción General
+Una API REST completa construida con Spring Boot 3.4.1 y Java 21, diseñada para gestionar todos los aspectos de las operaciones de una clínica veterinaria. Este sistema proporciona una plataforma robusta para la gestión de mascotas, consultas, registros clínicos y personal.
+
+## 🌟 Características Principales
+- Sistema completo de gestión de clínica veterinaria
+- Autenticación segura basada en JWT
+- Base de datos H2 en memoria con datos de ejemplo
+- Contenedorización con Docker
+- Listo para despliegue en Render
+- Manejo integral de errores
+- Validación de datos
+- Arquitectura modular
+
+## 🏗 Estructura del Proyecto
+```
+nfuegopy-api-veterinaria/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/veterinaria/
+│   │   │       ├── modules/       # Funcionalidad principal
+│   │   │       ├── ref/          # Datos de referencia
+│   │   │       └── seguridad/    # Componentes de seguridad
+│   │   └── resources/
+│   └── test/
+├── Dockerfile
+└── pom.xml
+```
+
+### 📦 Módulos Principales
+1. **Gestión de Consultas (Consulta)**
+   - Programación de citas
+   - Registro de visitas
+   - Seguimiento de historial médico
+   - Gestión de diagnósticos
+
+2. **Gestión de Empleados (Empleado)**
+   - Perfiles del personal
+   - Información de contacto
+   - Registros laborales
+   - Gestión de horarios
+
+3. **Registros Clínicos (Ficha Clinica)**
+   - Historiales médicos detallados
+   - Registros de tratamientos
+   - Citas de seguimiento
+   - Seguimiento de métricas de salud
+
+4. **Gestión de Veterinarios (Veterinario)**
+   - Perfiles profesionales
+   - Especializaciones
+   - Programación de disponibilidad
+   - Asignación de pacientes
+
+### 📚 Módulos de Referencia
+1. **Dueños de Mascotas (Dueno)**
+   - Perfiles completos de propietarios
+   - Información de contacto
+   - Vinculación de múltiples mascotas
+   - Preferencias de comunicación
+
+2. **Catálogo de Especies (Especie)**
+   - Registro de especies animales
+   - Información de razas
+   - Pautas de cuidado específicas por especie
+
+3. **Registro de Mascotas (Mascotas)**
+   - Perfiles detallados de mascotas
+   - Historial médico
+   - Asociaciones con propietarios
+   - Seguimiento de edad y salud
+
+4. **Gestión de Tratamientos (Tratamiento)**
+   - Protocolos de tratamiento
+   - Seguimiento de medicación
+   - Gestión de costos
+   - Programación de seguimiento
+
+## 🛠️ Especificaciones Técnicas
+
+### Tecnologías Utilizadas
+- **Java 21**: Última versión LTS
+- **Spring Boot 3.4.1**: Framework de aplicación moderno
+- **Spring Security**: Autenticación y autorización
+- **Spring Data JPA**: Persistencia de datos
+- **Base de datos H2**: Base de datos en memoria
+- **JWT**: Seguridad basada en tokens
+- **Maven**: Gestión de dependencias
+- **Docker**: Contenedorización
+- **Lombok**: Reducción de código repetitivo
+
+## 🚀 Instalación y Configuración
+
+### Prerequisitos
+```bash
+Java 21
+Maven 3.9.x
+Docker (opcional)
+Git
+```
+
+### Configuración de Desarrollo Local
+1. Clonar el repositorio:
+```bash
+git clone https://github.com/nfuegopy/nfuegopy-api-veterinaria.git
+cd nfuegopy-api-veterinaria
+```
+
+2. Construir el proyecto:
+```bash
+mvn clean install
+```
+
+3. Ejecutar la aplicación:
+```bash
+mvn spring-boot:run
+```
+
+### Despliegue con Docker
+1. Construir imagen Docker:
+```bash
+docker build -t veterinaria-api .
+```
+
+2. Ejecutar contenedor:
+```bash
+docker run -p 8080:8080 veterinaria-api
+```
+
+## 📡 Endpoints de la API
+
+### Autenticación
+```
+POST /api/auth/login
+Cuerpo: {
+    "username": "string",
+    "password": "string"
+}
+```
+
+### Recursos Principales
+- **Consultas**
+  - GET /api/consultas
+  - POST /api/consultas
+  - GET /api/consultas/{id}
+  - PUT /api/consultas/{id}
+  - DELETE /api/consultas/{id}
+
+- **Empleados**
+  - GET /api/empleados
+  - POST /api/empleados
+  - GET /api/empleados/{id}
+  - PUT /api/empleados/{id}
+  - DELETE /api/empleados/{id}
+
+[Documentación de endpoints adicionales...]
+
+## 💾 Configuración de Base de Datos
+
+### Configuración de H2
+```properties
+URL: jdbc:h2:mem:testdb
+Usuario: sa
+Contraseña: 123
+Consola: http://localhost:8080/h2-console
+```
+
+## 🌐 Guía de Despliegue en Render
+
+1. **Preparación del Repositorio**
+   - Hacer fork del repositorio
+   - Configurar variables de entorno
+
+2. **Configuración en Render**
+   - Crear nuevo Web Service
+   - Conectar repositorio de GitHub
+   - Seleccionar runtime Docker
+   - Configurar variables de entorno
+
+3. **Despliegue**
+   - Usar función de auto-despliegue
+   - Monitorear logs de construcción
+   - Verificar despliegue
+
+## 👨‍💻 Autor
+
+**Antonio Barrios**
+- GitHub: [@nfuegopy](https://github.com/nfuegopy)
+- Contribuciones y sugerencias son bienvenidas
+
+## 📄 Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT.
+
+## 🔄 Actualizaciones y Mantenimiento | Updates and Maintenance
+
+### Español
+Este proyecto se mantiene activamente y recibe actualizaciones regulares. Las últimas actualizaciones incluyen:
+- Actualización a Spring Boot 3.4.1
+- Mejoras en características de seguridad
+- Optimización de Docker
+- Soporte para despliegue en Render
+
+### English
+This project is actively maintained and receives regular updates. Latest updates include:
+- Upgrade to Spring Boot 3.4.1
+- Enhanced security features
+- Docker optimization
+- Render deployment support
 
